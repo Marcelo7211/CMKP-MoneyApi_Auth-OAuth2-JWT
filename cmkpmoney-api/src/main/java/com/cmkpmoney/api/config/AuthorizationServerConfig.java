@@ -20,18 +20,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+ 
 		clients.inMemory()
 			.withClient("Angular")//configurando o usuario client(angular, react, node, terão que acessar por este usuario)
 			.secret("angular")		//obs. isso não é a senha do usuario (admin, admin)
 			.scopes("read", "write") //client pode ler e escrever na api
-			.authorizedGrantTypes("client_credentials") //grand_type da requisição
-			.accessTokenValiditySeconds(1800); //definido o tempo de validade do da bearer (30 min)
+			.authorizedGrantTypes("client_credentials", "refresh_token") //grand_type da requisição
+			.accessTokenValiditySeconds(1800) //definido o tempo de validade do da bearer (30 min)
+			.refreshTokenValiditySeconds(3600 * 24); //Adicionando refresh para o o token por 24h
 	}
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(tokenStore()) // definindo onde será quardado o token
 		.accessTokenConverter(accessTokenConverter())
+		.reuseRefreshTokens(false)
 		.authenticationManager(authenticationManager);
 	}
 
