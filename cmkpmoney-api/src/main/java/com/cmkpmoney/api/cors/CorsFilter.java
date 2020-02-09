@@ -17,7 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
-
+	//Esta class gera um filtro que libera o cors para as orings selecionadas,
+	//A anotação cors não resolve para autenticação Oauth, porque os endpoints ja vem na biblioteca, não são
+	//implementados
 	private String originPermitida = "http://localhost:8000"; //TODO: Congigurar para diferentes ambientes
 	
 	@Override
